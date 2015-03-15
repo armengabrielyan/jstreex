@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet" href="http://static.jstree.com/3.0.0-beta5/assets/dist/themes/default/style.min.css"/>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="http://static.jstree.com/3.0.0-beta5/assets/dist/jstree.min.js"></script>
+  <script src="http://underscorejs.org/underscore-min.js"></script>
+
+  <script src="data.js"></script>
+  <script src="treex.js"></script>
+  <script>
+    jQuery(function () {
+      var tree = new treeX();
+      tree
+          .setBreadCrumbWatcher(function (breadCrumbs) {
+            var wrapper = jQuery('#breadCrumbs');
+            wrapper.empty();
+            _.each(breadCrumbs, function(crumb){
+              wrapper.append(crumb).append(' > ');
+            });
+          })
+          .setData(folders)
+          .setBreadCrumbTemplate('<a data-id="<%= id%>"><%= text%></a>')
+          .setOnNodeSelect(function(node){
+            console.info('Node selected: ', node);
+          });
+      tree.appendTo(jQuery('body'));
+      tree.selectNode(1);
+
+      window.tree = tree;
+    });
+  </script>
+</head>
+<body>
+<div class="container">
+    <div id="breadCrumbs"></div>
+</div>
+
+<style>
+    #breadCrumbs{
+        position: relative;
+        left: 0;
+        top: 0;
+    }
+</style>
+</body>
+</html>
